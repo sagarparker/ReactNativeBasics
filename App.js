@@ -1,55 +1,36 @@
 import { StatusBar } from 'expo-status-bar';
 import React,{ useState,useEffect } from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput,ScrollView } from 'react-native';
 
 export default function App() {
-  const [name,setName] = useState("Sagar");
-  const [age,setAge] = useState('30');
-  const [output,setOutput] = useState(false);
-
-  const clickHandler = () =>{
-    setOutput(true);
-  }
+  const [people,setPeople] = useState([
+    {name:"Sagar",key:'1'},
+    {name:"Max",key:'2'},
+    {name:"Lewis",key:'3'},
+    {name:"Charles",key:'4'},
+    {name:"Sebastian",key:'5'},
+    {name:"George",key:'6'},
+  ]);
 
   return (
     <View style={styles.container}>
-      <Text>Enter your name</Text>
-      <TextInput 
-        style={styles.input}
-        placeholder="Enter your name"
-        onChangeText={(val)=> setName(val)}/>
-      <Text>Enter your age</Text>
-      <TextInput 
-        style={styles.input}
-        keyboardType="numeric"
-        placeholder="Enter your age"
-        onChangeText={(val)=> setAge(val)}/>
-      <View style={styles.buttonContainer}>
-        <Button title="Update name"  onPress={clickHandler} />
-      </View>
-      {output && <Text>
-            Hello {name} {age}
-      </Text>}
+      <ScrollView>
+      {people.map((item)=> <Text style={styles.item} key={item.key}>{item.name} </Text> )}
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
+  container: {  
+    paddingTop:100,
+    paddingHorizontal:30
   },
-  buttonContainer:{
-    marginTop:10
-  },
-  input:{
-    borderWidth:1,
-    borderColor:'gainsboro',
-    width:150,
-    marginTop:10,
-    marginBottom:10,
-    padding:10 
+  item:{
+    padding:10,
+    fontSize:20,
+    margin:40,
+    backgroundColor:"gainsboro",
+    borderRadius:20
   }
 });
