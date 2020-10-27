@@ -1,50 +1,61 @@
 import { StatusBar } from 'expo-status-bar';
 import React,{ useState,useEffect } from 'react';
 import { StyleSheet, Text, View, Button, TextInput,ScrollView,FlatList,TouchableOpacity } from 'react-native';
+import Header from './components/header';
+import TodoItem from './components/todo';
+import AddToDo from './components/addTodo';
 
 export default function App() {
-  const [people,setPeople] = useState([
-    {name:"Sagar",key:'1'},
-    {name:"Max",key:'2'},
-    {name:"Lewis",key:'3'},
-    {name:"Charles",key:'4'},
-    {name:"Sebastian",key:'5'},
-    {name:"George",key:'6'},
-    {name:"Lando",key:'7'},
-  ]);
+  const [todos,setTodo] = useState([
+    {text:"First todo",key:"1"},
+    {text:"Second todo",key:"2"},
+    {text:"Third todo",key:"3"}
+  ])
 
   const pressHandler = (key) => {
-    console.log(key);
-    setPeople((prevPeople)=>{
-      return prevPeople.filter(person => person.key != key);
-    });
-  } 
+    setTodo((prevTodo)=>{
+      return prevTodo.filter(todo=> todo.key != key);
+    })
+  }
+
+  const submitHandler = (text) => {
+    setTodo((prevTodo)=>{
+        return [
+          {text:text, key: Math.random().toString()},
+          ...prevTodo
+        ]
+    })
+  }
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={people}
-        renderItem={({item})=>(
-          <TouchableOpacity onPress={()=> pressHandler(item.key)}>
-            <Text style={styles.item} key={item.key}>{item.name} </Text>
-          </TouchableOpacity>
-        )}
-      />
+      <Header/>
+      <View style={styles.content}>
+        <AddToDo submitHandler={submitHandler}/>
+        <View style={styles.list}>
+          <FlatList
+            data={todos}
+            renderItem={({item})=> (
+             <TodoItem item={item} pressHandler={pressHandler}/>
+            )}
+          />
+        </View>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {  
-    paddingTop:70,
-    paddingHorizontal:30,
-    backgroundColor:"gray"
+  container: {    
+    flex:1,
+    backgroundColor:"gainsboro"
   },
-  item:{
-    padding:10,
-    fontSize:20,
-    margin:40,
-    backgroundColor:"gainsboro",
-    borderRadius:20
+  content:{
+    padding:45
+  },
+  list:{
+    marginTop:20,
+    height:500
   }
+
 });
